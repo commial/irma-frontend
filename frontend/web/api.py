@@ -374,6 +374,41 @@ def file_infected(sha256):
     except Exception as e:
         return IrmaFrontendReturn.error(str(e))
 
+# ==============
+#  Documentation
+# ==============
+@route("/api-docs")
+def resource_listing():
+    try:
+        import yaml
+        import json
+
+        with open('docs/api/specs/api-docs.yml') as file:
+            data = yaml.load(file)
+
+            bottle.response.content_type = "application/json"
+            return json.dumps(data)
+
+    except Exception as e:
+        return IrmaFrontendReturn.error(str(e))
+
+
+@route("/api-docs/<file_name:re:(files|probes|scans)>")
+def api_declaration(file_name):
+    try:
+        import yaml
+        import json
+
+        with open('docs/api/specs/' + file_name + '.yml') as file:
+            data = yaml.load(file)
+            data.update(yaml.load(open('docs/api/specs/common.yml')))
+
+            bottle.response.content_type = "application/json"
+            return json.dumps(data)
+
+    except Exception as e:
+        return IrmaFrontendReturn.error(str(e))
+
 
 # ======
 #  Main

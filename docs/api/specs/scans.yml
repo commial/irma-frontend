@@ -1,0 +1,249 @@
+---
+
+resourcePath: /scans
+
+apis:
+  - path: "/scans"
+    operations:
+      - method: POST
+        summary: Add a new scan
+        notes: Returns an ID for the new scan to be used by the API
+        type: Scan
+        nickname: new
+        parameters:
+        responseMessages:
+          # TODO: Server not available
+  - path: "/scans/{scanId}"
+    operations:
+      - method: GET
+        summary: Find scan by ID
+        notes: Returns a scan based on ID
+        type: Scan
+        nickname: get
+        parameters:
+          - name: scanId
+            description: ID of scan that needs to be fetched
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid ID supplied
+          - code: 404
+            message: Scan not found
+  - path: "/scans/{scanId}/cancel"
+    operations:
+      - method: POST
+        summary: Cancel a started scan
+        notes:
+        nickname: cancel
+        type: void
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid scan value
+          - code: 404
+            message: scan not found
+            # TODO: Scan already cancel
+            # TODO: Scan not started
+  - path: "/scans/{scanId}/files"
+    operations:
+      - method: GET
+        summary: List Files in the Scan
+        notes:
+        nickname: listFiles
+        type: array
+        items:
+          $ref: File
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan id
+          - code: 404
+            message: Scan not found
+      - method: POST
+        summary: Add a new file to a scan
+        notes:
+        nickname: addFile
+        type: File
+        consumes: multipart/form-data
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+          - name: file
+            description: The new file to upload
+            required: false
+            allowMultiple: false
+            type: file
+            paramType: form
+        responseMessages:
+          - code: 400
+            message: Invalid Scan id
+          - code: 404
+            message: Scan not found
+            # TODO: Scan launched
+            # TODO: File already exists
+  - path: "/scans/{scanId}/files/{fileId}"
+    operations:
+      - method: DELETE
+        summary: Remove a file from a Scan
+        notes: The Scan does not have to be launch
+        type: void
+        nickname: removeFile
+        parameters:
+          - name: scanId
+            description: scan id to delete
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+          - name: fileId
+            description: File where to extract informations
+            required: true
+            allowMultiple: false
+            type: integer
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan ID
+          - code: 400
+            message: Invalid File ID
+          - code: 404
+            message: File not found
+          - code: 404
+            message: Scan not found
+            # TODO: Scan already launched
+  - path: "/scans/{scanId}/launch"
+    operations:
+      - method: POST
+        summary: Launch the scan
+        notes:
+        type: Scan
+        nickname: launch
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan id
+          - code: 404
+            message: Scan not found
+            # TODO: Scan already started
+  - path: "/scans/{scanId}/probes"
+    operations:
+      - method: GET
+        summary: List Probes activated for the Scan
+        notes:
+        nickname: listProbes
+        type: array
+        items:
+          $ref: Probe
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan id
+          - code: 404
+            message: Scan not found
+      - method: POST
+        summary: Activate a new probes
+        notes:
+        nickname: activateProbe
+        type: void
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+          - name: probeId
+            description: The probe ID defined by the application
+            required: false
+            allowMultiple: false
+            type: integer
+            paramType: form
+        responseMessages:
+          - code: 400
+            message: Invalid Scan id
+          - code: 404
+            message: Scan not found
+            # TODO: Scan launched
+  - path: "/scans/{scanId}/probes/{probeId}"
+    operations:
+      - method: DELETE
+        summary: Remove a Probe
+        notes: The Scan does not have to be launch
+        type: void
+        nickname: removeFile
+        parameters:
+          - name: scanId
+            description: scan id to delete
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+          - name: probeId
+            description: The probe id to remove
+            required: true
+            allowMultiple: false
+            type: integer
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan ID
+          - code: 400
+            message: Invalid Probe ID
+          - code: 404
+            message: Probe not found
+          - code: 404
+            message: Scan not found
+            # TODO: Scan already launched
+  - path: "/scans/{scanId}/results"
+    operations:
+      - method: GET
+        summary: List of results
+        notes: The scan have to be launched
+        type: array
+        items:
+          $ref: Result
+        nickname: getResults
+        parameters:
+          - name: scanId
+            description: Scan ID
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 400
+            message: Invalid Scan ID
+          - code: 404
+            message: Scan not found
+            # TODO: Scan not launched

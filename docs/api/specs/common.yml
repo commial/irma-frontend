@@ -1,0 +1,64 @@
+---
+
+apiVersion: 1.0.0
+swaggerVersion: 1.2
+basePath: /_api
+produces:
+  - application/json
+
+models:
+  Scan:
+    id: Scan
+    properties:
+      id:
+        type: integer
+        format: int64
+      status:
+        type: integer
+      date:
+        type: string
+        format: date
+  File:
+    id: File
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      sha256:
+        type: string
+      sha1:
+        type: string
+      md5_file:
+        type: string
+      last_scan:
+        type: string
+        format: date
+      size_file:
+        type: integer
+        format: int64
+  Probe:
+    id: Probe
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      version:
+        type: string
+  Result:
+    id: Result
+    properties:
+      id:
+        type: integer
+        format: int64
+      idProbe:
+        type: integer
+        format: int64
+      idFile:
+        type: integer
+        format: int64
+      data:
+        type: string
