@@ -1,0 +1,64 @@
+{
+	"apiVersion": "1.0.0",
+	"swaggerVersion": "1.2",
+	"basePath": "http://www.frontend.irma/_api",
+	"resourcePath": "/scans",
+	"produces": [
+		"application/json"
+	],
+	"apis": [
+		{
+			"path": "/scans/{scanId}",
+			"operations": [
+				{
+					"method": "GET",
+					"summary": "Find scan by ID",
+					"notes": "Returns a scan based on ID",
+					"type": "Scan",
+					"nickname": "getscanById",
+					"authorizations": {},
+					"parameters": [
+						{
+							"name": "scanId",
+							"description": "ID of scan that needs to be fetched",
+							"required": true,
+							"type": "integer",
+							"format": "int64",
+							"paramType": "path",
+							"allowMultiple": false,
+							"minimum": "1.0",
+							"maximum": "100000.0"
+						}
+					],
+					"responseMessages": [
+						{
+							"code": 400,
+							"message": "Invalid ID supplied"
+						},
+						{
+							"code": 404,
+							"message": "scan not found"
+						}
+					]
+				}
+			]
+		}
+	],
+	"models": {
+		"Scan": {
+			"id": "Scan",
+			"required": [
+				"id"
+			],
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"description": "unique identifier for the pet",
+					"minimum": "0.0",
+					"maximum": "100.0"
+				}
+			}
+		}
+	}
+}
