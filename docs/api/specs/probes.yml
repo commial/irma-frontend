@@ -1,0 +1,16 @@
+---
+
+resourcePath: /probes
+
+apis:
+  - path: "/probes"
+    operations:
+      - method: GET
+        summary: List all Prodes available for the platform
+        notes:
+        type: array
+        items:
+          $ref: Probe
+        nickname: list
+        parameters:
+        responseMessages:

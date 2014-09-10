@@ -1,0 +1,41 @@
+---
+
+resourcePath: /files
+
+apis:
+  - path: "/files/{hash}"
+    operations:
+      - method: GET
+        summary: Find informations for file by sha256 hash
+        notes: Return informations about the file
+        type: File
+        nickname: getByHash
+        parameters:
+          - name: hash
+            description: Hash using sh256 function of the file
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 404
+            message: File not found
+  - path: "/files/{hash}/results"
+    operations:
+      - method: GET
+        summary: List last IRMA tools informations for the specified file
+        notes:
+        type: array
+        items:
+          $ref: Result
+        nickname: getResult
+        parameters:
+          - name: hash
+            description: Hash using sh256 function of the file
+            required: true
+            allowMultiple: false
+            type: string
+            paramType: path
+        responseMessages:
+          - code: 404
+            message: File not found
