@@ -87,7 +87,12 @@ class ScanApi(WebApi):
             files = {}
             for f in request.files:
                 upfile = request.files.get(f)
-                filename = os.path.basename(upfile.filename)
+                # NOTE: using raw_filename instead of filename as filename has
+                # been sanitized by bottle.py to avoid FS filename issues. As
+                # files are stored with their hash value instead of name, this
+                # should not introduce errors.
+                filename = upfile.raw_filename
+                filename = os.path.basename(filename)
                 data = upfile.file.read()
                 files[filename] = data
             nb_files = scan_ctrl.add_files(scanid, files)
