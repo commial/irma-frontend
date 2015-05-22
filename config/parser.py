@@ -267,3 +267,7 @@ def get_sql_db_tables_prefix():
 
 def get_samples_storage_path():
     return os.path.abspath(frontend_config.samples_storage.path)
+
+
+def prefix_table_name(name):
+    return '{0}_{1}'.format(frontend_config.sqldb.tables_prefix, name)

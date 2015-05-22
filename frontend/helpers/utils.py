@@ -14,6 +14,7 @@
 # terms contained in the LICENSE file.
 
 import re
+from datetime import datetime
 from lib.common.utils import UUID
 
 
@@ -62,3 +63,7 @@ def guess_hash_type(value):
         except ValueError:
             pass
     return hash_type
+
+
+def from_datetime_to_timestamp(datetime_value):
+    return round((datetime_value - datetime(1970, 1, 1)).total_seconds(), 2)

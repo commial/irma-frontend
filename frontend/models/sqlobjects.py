@@ -14,9 +14,10 @@
 
 import hashlib
 import os
+from datetime import datetime
 
 from sqlalchemy import Table, Column, Integer, Float, ForeignKey, String, \
-    event, UniqueConstraint
+    event, UniqueConstraint, DateTime
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -171,12 +172,12 @@ class File(Base, SQLDatabaseObject):
         name='md5'
     )
     timestamp_first_scan = Column(
-        Float(precision=2),
+        DateTime(),
         nullable=False,
         name='timestamp_first_scan'
     )
     timestamp_last_scan = Column(
-        Float(precision=2),
+        DateTime(),
         nullable=False,
         name='timestamp_last_scan'
     )
@@ -288,7 +289,7 @@ class File(Base, SQLDatabaseObject):
         :return: the number of deleted files
         """
         fl = session.query(cls).filter(
-            cls.timestamp_last_scan < compat.timestamp() - max_age
+            cls.timestamp_last_scan < datetime.utcfromtimestamp(compat.timestamp() - max_age)
         ).all()
         for f in fl:
             f.remove_file_from_fs()
@@ -400,7 +401,7 @@ class Scan(Base, SQLDatabaseObject):
         name='external_id'
     )
     date = Column(
-        Integer,
+        DateTime(),
         nullable=False,
         name='date'
     )
@@ -733,7 +734,7 @@ class ScanEvents(Base, SQLDatabaseObject):
         name='status'
     )
     timestamp = Column(
-        Float(precision=2),
+        DateTime(),
         nullable=False,
         name='timestamp'
     )
@@ -752,5 +753,5 @@ class ScanEvents(Base, SQLDatabaseObject):
     def __init__(self, status, scan):
         super(ScanEvents, self).__init__()
         self.status = status
-        self.timestamp = compat.timestamp()
+        self.timestamp = datetime.utcnow()
         self.scan = scan

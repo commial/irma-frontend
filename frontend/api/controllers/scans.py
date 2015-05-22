@@ -14,8 +14,8 @@
 # terms contained in the LICENSE file.
 
 import os
+from datetime import datetime
 from bottle import response, request
-from lib.common import compat
 from lib.irma.common.utils import IrmaScanStatus
 from frontend.api.errors import process_error
 from frontend.models.sqlobjects import Scan
@@ -62,7 +62,7 @@ def new(db):
     try:
         ip = request.remote_addr
 
-        scan = Scan(compat.timestamp(), ip)
+        scan = Scan(datetime.utcnow(), ip)
         db.add(scan)
 
         scan.set_status(IrmaScanStatus.empty)

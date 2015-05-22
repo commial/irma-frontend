@@ -15,6 +15,7 @@
 
 from marshmallow import Schema, fields
 
+from frontend.helpers.utils import from_datetime_to_timestamp
 
 class ApiErrorSchema(Schema):
     class Meta:
@@ -22,6 +23,10 @@ class ApiErrorSchema(Schema):
 
 
 class FileSchema(Schema):
+    # TODO : clean in Web this hack that converts datetime to timestamp
+    timestamp_first_scan = fields.Function(lambda x: from_datetime_to_timestamp(x.timestamp_first_scan))
+    timestamp_last_scan = fields.Function(lambda x: from_datetime_to_timestamp(x.timestamp_last_scan))
+    # /TODO
     class Meta:
         fields = ("sha256", "sha1", "md5", "timestamp_first_scan",
                   "timestamp_last_scan", "size", "id")
@@ -52,7 +57,9 @@ class ScanSchema(Schema):
     id = fields.String(attribute="external_id")
     results = fields.Nested(FileWebSchema, attribute="files_web", many=True,
                             exclude=('probe_results', 'file_infos'))
-
+    # TODO : clean in Web this hack that converts datetime to timestamp
+    date = fields.Function(lambda x: from_datetime_to_timestamp(x.date))
+    # /TODO
     class Meta:
         fields = ("id", "date", "status", "probes_total", "probes_finished",
                   "results")

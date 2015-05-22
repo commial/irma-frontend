@@ -15,7 +15,7 @@
 
 import hashlib
 import logging
-from lib.common import compat
+from datetime import datetime
 from lib.irma.common.utils import IrmaReturnCode, IrmaScanStatus, IrmaProbeType
 from lib.irma.common.exceptions import IrmaDatabaseResultNotFound, \
     IrmaValueError, IrmaTaskError, IrmaFtpError
@@ -52,7 +52,7 @@ def add_files(scan, files, session):
             file = File.load_from_sha256(file_sha256, session)
         except IrmaDatabaseResultNotFound:
             # It doesn't
-            time = compat.timestamp()
+            time = datetime.utcnow()
             file = File(time, time)
             file.save_file_to_fs(data)
             session.add(file)
@@ -249,7 +249,7 @@ def set_result(scanid, file_hash, probe, result):
             print("filename not found in scan")
             return
 
-        fws[0].file.timestamp_last_scan = compat.timestamp()
+        fws[0].file.timestamp_last_scan = datetime.utcnow()
         fws[0].file.update(['timestamp_last_scan'], session=session)
 
         sanitized_res = sanitize_dict(result)
