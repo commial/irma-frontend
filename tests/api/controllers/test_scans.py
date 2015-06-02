@@ -1,3 +1,4 @@
+import datetime
 from random import randint
 from unittest import TestCase
 from mock import MagicMock, patch
@@ -66,7 +67,7 @@ class TestApiScans(TestCase):
             with patch("frontend.api.controllers.scans.scan_schema") as schema_mock:
                 result = api_scans.new(db_mock)
         self.assertTrue(scan_mock.called)
-        self.assertIsInstance(scan_mock.call_args[0][0], float)
+        self.assertIsInstance(scan_mock.call_args[0][0], datetime.datetime)
         self.assertEqual(scan_mock.call_args[0][1], api_scans.request.remote_addr)
         self.assertTrue(db_mock.add.called)
         self.assertEqual(db_mock.add.call_args, ((scan_mock(),),))

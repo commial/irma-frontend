@@ -10,7 +10,7 @@ before_script:
   - export IRMA_FRONTEND_CFG_PATH=tests/
 
 script: 
-  - nosetests tests/
+  - make testc
 
 notifications:
   email:

@@ -19,7 +19,7 @@ from config.parser import prefix_table_name
 
 file_table = prefix_table_name("file")
 scan_table = prefix_table_name("scan")
-submision_table = prefix_table_name("submission")
+submission_table = prefix_table_name("submission")
 tag_table = prefix_table_name("tag")
 agent_table = prefix_table_name("fileAgent")
 probe_table = prefix_table_name("probeResult")
