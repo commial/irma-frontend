@@ -439,6 +439,34 @@
                 }
             }
         },
+        "/files/{fileSHA256}": {
+            "get": {
+                "summary": "Retrieve a file from its sha256",
+                "description": "Possibility to get back a file\n",
+                "tags": [
+                    "Search"
+                ],
+                "parameters": [
+                    {
+                        "name": "fileSHA256",
+                        "in": "query",
+                        "description": "Hash value (can be md5, sha1 or sha256)",
+                        "type": "string"
+		    }
+		],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "default": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+	    }
+	},
         "/search/files": {
             "get": {
                 "summary": "Search files",

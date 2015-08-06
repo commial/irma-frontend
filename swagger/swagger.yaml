@@ -362,6 +362,31 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
+  /files/{fileSHA256}:
+    get:
+      summary: Retrieve a file from its sha256
+      description: |
+        Possibility to get back a file
+      tags:
+        - Search
+      parameters:
+        - name: fileSHA256
+          in: path
+          type: string
+          description: SHA256 of the file
+          required: true
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   Scan:
     type: object
