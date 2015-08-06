@@ -26,6 +26,7 @@ def define_routes(application):
     application.route("/probes", callback=probes.list)
     # files routes
     application.route("/search/files", callback=search.files)
+    application.route("/files/<filesha256>", callback=search.get_file)
     # scans routes
     application.route("/scans",
                       callback=scans.list)

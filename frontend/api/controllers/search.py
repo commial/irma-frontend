@@ -17,7 +17,7 @@ from bottle import response, request
 
 from frontend.api.errors import process_error
 from frontend.helpers.utils import guess_hash_type
-from frontend.models.sqlobjects import FileWeb
+from frontend.models.sqlobjects import FileWeb, File
 from frontend.helpers.schemas import FileWebSchema
 
 
@@ -78,5 +78,19 @@ def files(db):
             'limit': limit,
             'items': file_web_schema.dump(items, many=True).data,
         }
+    except Exception as e:
+        process_error(e)
+
+
+def get_file(filesha256, db):
+    """Retrieve a file based on its filesha256"""
+    try:
+        fobj = File.load_from_sha256(filesha256, db)
+
+        # Force download
+        response.content_type = 'application/octet-stream; charset=UTF-8'
+        response.content_disposition = 'attachment; filename=' + filesha256
+        return open(fobj.path).read()
+
     except Exception as e:
         process_error(e)
