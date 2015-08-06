@@ -1,6 +1,7 @@
 test_routes = {
     "/probes": ["GET"],
     "/search/files": ["GET"],
+    "/files/<filesha256>": ["GET"],
     "/scans": ["GET", "POST"],
     "/scans/<scanid>": ["GET"],
     "/scans/<scanid>/files": ["POST"],
